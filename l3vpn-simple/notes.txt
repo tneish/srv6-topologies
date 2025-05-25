@@ -1,0 +1,4 @@
+You can use ipv6 unicast to send BGP route for srv6 node prefix..
+But to get bgpd to do recursive lookup for BGP prefix SID next-hop, you need to tell FRR/bgpd to disable-connected-check for the neighbor.
+Doesn't matter if next-hop is global or link-local, frr/linux does not do recursive lookup in BGP for the locator otherwise.
+Using a static route for the srv6 node prefix also works.

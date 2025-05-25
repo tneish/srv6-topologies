@@ -1,0 +1,68 @@
+name: testcasel3vpn
+
+topology:
+  kinds:
+    linux:
+      sysctls:
+        net.ipv4.conf.all.forwarding: 1
+        net.ipv6.conf.all.forwarding: 1
+        net.ipv6.conf.default.accept_ra: 0
+        net.ipv6.conf.all.accept_ra: 0
+        net.vrf.strict_mode: 1
+        net.ipv4.conf.all.rp_filter: 0
+        net.ipv4.conf.default.rp_filter: 0
+        net.ipv6.conf.default.seg6_enabled: 1
+        net.ipv6.conf.all.seg6_enabled: 1
+        net.ipv6.seg6_flowlabel: 1
+
+  nodes:
+    router1:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds:
+        - router1/daemons:/etc/frr/daemons
+        - router1/frr.conf:/etc/frr/frr.conf
+      exec:
+        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+
+    router2:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds:
+        - router2/daemons:/etc/frr/daemons
+        - router2/frr.conf:/etc/frr/frr.conf
+      exec:
+        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+
+    PC1:
+      kind: linux
+      image: wbitt/network-multitool:latest
+      exec:
+        - ip link set eth1 up
+        - ip addr add 2001:1::2/64 dev eth1
+        - ip route add ::/0 via 2001:1::1 dev eth1
+
+    PC2:
+      kind: linux
+      image: wbitt/network-multitool:latest
+      exec:
+        - ip link set eth1 up
+        - ip addr add 2001:2::2/64 dev eth1
+        - ip route add ::/0 via 2001:2::1 dev eth1
+
+  links:
+    - endpoints: [ "router1:eth1", "router2:eth1" ]
+    - endpoints: [ "PC1:eth1", "router1:eth2" ]
+    - endpoints: [ "PC2:eth1", "router2:eth2" ]
