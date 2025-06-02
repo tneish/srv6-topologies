@@ -1,0 +1,1872 @@
+name: isisscale
+
+topology:
+  kinds:
+    linux:
+      sysctls:
+        net.ipv4.conf.all.forwarding: 1
+        net.ipv6.conf.all.forwarding: 1
+        net.ipv6.conf.default.accept_ra: 0
+        net.ipv6.conf.all.accept_ra: 0
+        net.vrf.strict_mode: 1
+        net.ipv4.conf.all.rp_filter: 0
+        net.ipv4.conf.default.rp_filter: 0
+        net.ipv6.conf.default.seg6_enabled: 1
+        net.ipv6.conf.all.seg6_enabled: 1
+        net.ipv6.seg6_flowlabel: 1
+
+  nodes:
+    isis-highprio1:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds:
+        - isis-highprio1/daemons:/etc/frr/daemons
+        - isis-highprio1/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+    isis-highprio2:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds:
+        - isis-highprio2/daemons:/etc/frr/daemons
+        - isis-highprio2/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+    PC1:
+      kind: linux
+      image: wbitt/network-multitool:latest
+      exec:
+        - ip link set eth1 up
+        - ip addr add 2001:1::2/64 dev eth1
+        - ip route add ::/0 via 2001:1::1 dev eth1
+
+    PC2:
+      kind: linux
+      image: wbitt/network-multitool:latest
+      exec:
+        - ip link set eth1 up
+        - ip addr add 2001:2::2/64 dev eth1
+        - ip route add ::/0 via 2001:2::1 dev eth1
+
+
+    isis-lowprio1:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio1/daemons:/etc/frr/daemons
+        - isis-lowprio1/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+    isis-lowprio2:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio2/daemons:/etc/frr/daemons
+        - isis-lowprio2/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio3:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio3/daemons:/etc/frr/daemons
+        - isis-lowprio3/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio4:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio4/daemons:/etc/frr/daemons
+        - isis-lowprio4/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio5:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio5/daemons:/etc/frr/daemons
+        - isis-lowprio5/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio6:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio6/daemons:/etc/frr/daemons
+        - isis-lowprio6/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio7:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio7/daemons:/etc/frr/daemons
+        - isis-lowprio7/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio8:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio8/daemons:/etc/frr/daemons
+        - isis-lowprio8/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio9:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio9/daemons:/etc/frr/daemons
+        - isis-lowprio9/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio10:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio10/daemons:/etc/frr/daemons
+        - isis-lowprio10/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio11:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio11/daemons:/etc/frr/daemons
+        - isis-lowprio11/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio12:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio12/daemons:/etc/frr/daemons
+        - isis-lowprio12/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio13:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio13/daemons:/etc/frr/daemons
+        - isis-lowprio13/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio14:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio14/daemons:/etc/frr/daemons
+        - isis-lowprio14/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio15:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio15/daemons:/etc/frr/daemons
+        - isis-lowprio15/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio16:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio16/daemons:/etc/frr/daemons
+        - isis-lowprio16/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio17:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio17/daemons:/etc/frr/daemons
+        - isis-lowprio17/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio18:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio18/daemons:/etc/frr/daemons
+        - isis-lowprio18/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio19:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio19/daemons:/etc/frr/daemons
+        - isis-lowprio19/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio20:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio20/daemons:/etc/frr/daemons
+        - isis-lowprio20/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio21:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio21/daemons:/etc/frr/daemons
+        - isis-lowprio21/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio22:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio22/daemons:/etc/frr/daemons
+        - isis-lowprio22/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio23:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio23/daemons:/etc/frr/daemons
+        - isis-lowprio23/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio24:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio24/daemons:/etc/frr/daemons
+        - isis-lowprio24/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio25:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio25/daemons:/etc/frr/daemons
+        - isis-lowprio25/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio26:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio26/daemons:/etc/frr/daemons
+        - isis-lowprio26/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio27:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio27/daemons:/etc/frr/daemons
+        - isis-lowprio27/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio28:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio28/daemons:/etc/frr/daemons
+        - isis-lowprio28/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio29:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio29/daemons:/etc/frr/daemons
+        - isis-lowprio29/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio30:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio30/daemons:/etc/frr/daemons
+        - isis-lowprio30/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio31:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio31/daemons:/etc/frr/daemons
+        - isis-lowprio31/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio32:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio32/daemons:/etc/frr/daemons
+        - isis-lowprio32/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio33:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio33/daemons:/etc/frr/daemons
+        - isis-lowprio33/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio34:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio34/daemons:/etc/frr/daemons
+        - isis-lowprio34/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio35:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio35/daemons:/etc/frr/daemons
+        - isis-lowprio35/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio36:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio36/daemons:/etc/frr/daemons
+        - isis-lowprio36/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio37:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio37/daemons:/etc/frr/daemons
+        - isis-lowprio37/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio38:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio38/daemons:/etc/frr/daemons
+        - isis-lowprio38/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio39:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio39/daemons:/etc/frr/daemons
+        - isis-lowprio39/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio40:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio40/daemons:/etc/frr/daemons
+        - isis-lowprio40/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio41:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio41/daemons:/etc/frr/daemons
+        - isis-lowprio41/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio42:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio42/daemons:/etc/frr/daemons
+        - isis-lowprio42/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio43:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio43/daemons:/etc/frr/daemons
+        - isis-lowprio43/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio44:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio44/daemons:/etc/frr/daemons
+        - isis-lowprio44/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio45:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio45/daemons:/etc/frr/daemons
+        - isis-lowprio45/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio46:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio46/daemons:/etc/frr/daemons
+        - isis-lowprio46/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio47:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio47/daemons:/etc/frr/daemons
+        - isis-lowprio47/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio48:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio48/daemons:/etc/frr/daemons
+        - isis-lowprio48/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio49:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio49/daemons:/etc/frr/daemons
+        - isis-lowprio49/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio50:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio50/daemons:/etc/frr/daemons
+        - isis-lowprio50/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio51:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio51/daemons:/etc/frr/daemons
+        - isis-lowprio51/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio52:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio52/daemons:/etc/frr/daemons
+        - isis-lowprio52/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio53:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio53/daemons:/etc/frr/daemons
+        - isis-lowprio53/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio54:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio54/daemons:/etc/frr/daemons
+        - isis-lowprio54/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio55:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio55/daemons:/etc/frr/daemons
+        - isis-lowprio55/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio56:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio56/daemons:/etc/frr/daemons
+        - isis-lowprio56/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio57:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio57/daemons:/etc/frr/daemons
+        - isis-lowprio57/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio58:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio58/daemons:/etc/frr/daemons
+        - isis-lowprio58/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio59:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio59/daemons:/etc/frr/daemons
+        - isis-lowprio59/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio60:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio60/daemons:/etc/frr/daemons
+        - isis-lowprio60/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio61:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio61/daemons:/etc/frr/daemons
+        - isis-lowprio61/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio62:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio62/daemons:/etc/frr/daemons
+        - isis-lowprio62/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio63:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio63/daemons:/etc/frr/daemons
+        - isis-lowprio63/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio64:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio64/daemons:/etc/frr/daemons
+        - isis-lowprio64/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio65:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio65/daemons:/etc/frr/daemons
+        - isis-lowprio65/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio66:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio66/daemons:/etc/frr/daemons
+        - isis-lowprio66/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio67:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio67/daemons:/etc/frr/daemons
+        - isis-lowprio67/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio68:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio68/daemons:/etc/frr/daemons
+        - isis-lowprio68/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio69:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio69/daemons:/etc/frr/daemons
+        - isis-lowprio69/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio70:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio70/daemons:/etc/frr/daemons
+        - isis-lowprio70/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio71:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio71/daemons:/etc/frr/daemons
+        - isis-lowprio71/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio72:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio72/daemons:/etc/frr/daemons
+        - isis-lowprio72/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio73:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio73/daemons:/etc/frr/daemons
+        - isis-lowprio73/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio74:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio74/daemons:/etc/frr/daemons
+        - isis-lowprio74/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio75:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio75/daemons:/etc/frr/daemons
+        - isis-lowprio75/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio76:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio76/daemons:/etc/frr/daemons
+        - isis-lowprio76/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio77:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio77/daemons:/etc/frr/daemons
+        - isis-lowprio77/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio78:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio78/daemons:/etc/frr/daemons
+        - isis-lowprio78/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio79:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio79/daemons:/etc/frr/daemons
+        - isis-lowprio79/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio80:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio80/daemons:/etc/frr/daemons
+        - isis-lowprio80/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio81:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio81/daemons:/etc/frr/daemons
+        - isis-lowprio81/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio82:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio82/daemons:/etc/frr/daemons
+        - isis-lowprio82/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio83:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio83/daemons:/etc/frr/daemons
+        - isis-lowprio83/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio84:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio84/daemons:/etc/frr/daemons
+        - isis-lowprio84/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio85:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio85/daemons:/etc/frr/daemons
+        - isis-lowprio85/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio86:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio86/daemons:/etc/frr/daemons
+        - isis-lowprio86/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio87:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio87/daemons:/etc/frr/daemons
+        - isis-lowprio87/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio88:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio88/daemons:/etc/frr/daemons
+        - isis-lowprio88/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio89:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio89/daemons:/etc/frr/daemons
+        - isis-lowprio89/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio90:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio90/daemons:/etc/frr/daemons
+        - isis-lowprio90/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio91:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio91/daemons:/etc/frr/daemons
+        - isis-lowprio91/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio92:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio92/daemons:/etc/frr/daemons
+        - isis-lowprio92/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio93:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio93/daemons:/etc/frr/daemons
+        - isis-lowprio93/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio94:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio94/daemons:/etc/frr/daemons
+        - isis-lowprio94/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio95:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio95/daemons:/etc/frr/daemons
+        - isis-lowprio95/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio96:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio96/daemons:/etc/frr/daemons
+        - isis-lowprio96/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio97:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio97/daemons:/etc/frr/daemons
+        - isis-lowprio97/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio98:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio98/daemons:/etc/frr/daemons
+        - isis-lowprio98/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio99:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio99/daemons:/etc/frr/daemons
+        - isis-lowprio99/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+
+  
+    isis-lowprio100:
+      kind: linux
+      image: quay.io/frrouting/frr:10.3.0
+      binds: 
+        - isis-lowprio100/daemons:/etc/frr/daemons
+        - isis-lowprio100/frr.conf:/etc/frr/frr.conf
+      exec:
+        #        - ip link set eth0 down
+        - ip link add vrf100 type vrf table 100
+        - ip route add table 100 unreachable default metric 4278198272
+        - ip link set dev vrf100 up
+        - ip link set eth2 master vrf100
+        - ip link set eth2 up
+        - ip link set eth1 up
+        - ip link set eth0 up
+
+  links:
+    - endpoints:
+      - "isis-lowprio1:eth1"
+      - "mgmt-net:isis-lowprio1-eth1"
+    - endpoints: [ "PC1:eth1", "isis-highprio1:eth2" ]
+    - endpoints: [ "PC2:eth1", "isis-highprio2:eth2" ]
+
